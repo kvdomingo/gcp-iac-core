@@ -22,3 +22,9 @@ module "github_actions_workload_identity_pool" {
   github_repo_owner_id = var.github_repo_owner_id
   terraform_sa_id      = module.service_accounts.terraform_sa_id
 }
+
+module "artifact_registry" {
+  source = "./modules/artifact-registry"
+
+  region = local.default_region
+}
