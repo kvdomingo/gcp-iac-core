@@ -1,0 +1,20 @@
+name: "[Pipeline] Deploy dev"
+on:
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: true
+
+jobs:
+  apply-infra:
+    name: Apply Terraform infrastructure
+    uses: ./.github/workflows/common-infra.yaml
+    permissions:
+      id-token: write
+      contents: read
+    with:
+      applyChanges: true
+      projectNumber: 1010002207747
+    secrets: inherit

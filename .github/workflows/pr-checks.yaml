@@ -1,0 +1,15 @@
+name: "[Pipeline] Run PR checks"
+
+on:
+  pull_request:
+
+jobs:
+  pr-checks:
+    name: Run PR checks
+    uses: ./.github/workflows/common-pr-checks.yaml
+    permissions:
+      id-token: write
+      contents: read
+    with:
+      projectNumber: 1010002207747
+    secrets: inherit

@@ -1,0 +1,73 @@
+name: "[Component] Apply Terraform infrastructure"
+
+on:
+  workflow_call:
+    inputs:
+      applyChanges:
+        required: false
+        type: boolean
+        default: false
+        description: Whether to apply changes or just plan
+      projectNumber:
+        required: true
+        type: number
+        description: GCP project number
+  workflow_dispatch:
+    inputs:
+      applyChanges:
+        required: false
+        type: boolean
+        default: false
+        description: Whether to apply changes or just plan
+      projectNumber:
+        required: true
+        type: number
+        description: GCP project number
+
+concurrency:
+  group: terraform
+  cancel-in-progress: false
+
+jobs:
+  terraform-infra:
+    name: Terraform infrastructure
+    runs-on: ubuntu-latest
+    environment: "${{ inputs.applyChanges && inputs.environment || null }}"
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: auth
+        name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2.1.3
+        with:
+          create_credentials_file: true
+          workload_identity_provider: "projects/${{ inputs.projectNumber }}/locations/global/workloadIdentityPools/github-pool/providers/github-pool-provider"
+          service_account: "terraform@my-projects-306716.iam.gserviceaccount.com"
+          access_token_scopes: "email, openid, https://www.googleapis.com/auth/cloud-platform"
+          token_format: "access_token"
+
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.10.5
+
+      - name: Terraform initialize
+        run: terraform init -input=false
+
+      - name: Terraform validate
+        run: terraform validate
+
+      - name: Terraform plan
+        env:
+          TF_VAR_github_repo_owner_id: "${{ github.repository_owner_id }}"
+        run: terraform plan -out=.tfplan -input=false
+
+      - name: Terraform apply
+        if: ${{ inputs.applyChanges }}
+        env:
+          TF_VAR_github_repo_owner_id: "${{ github.repository_owner_id }}"
+        run: terraform apply -auto-approve -input=false .tfplan
+        continue-on-error: true
