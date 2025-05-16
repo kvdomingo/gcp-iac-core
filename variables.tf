@@ -1,3 +1,8 @@
 variable "github_repo_owner_id" {
-  type = string
+  type = number
+}
+
+variable "hetzner_token" {
+  type      = string
+  sensitive = true
 }
