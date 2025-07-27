@@ -8,10 +8,6 @@ provider "google" {
   region  = local.default_region
 }
 
-provider "hcloud" {
-  token = var.hetzner_token
-}
-
 module "apis" {
   source = "./modules/cloud-platform"
 }
@@ -31,8 +27,4 @@ module "artifact_registry" {
   source = "./modules/artifact-registry"
 
   region = local.default_region
-}
-
-module "hetzner_lab" {
-  source = "./modules/hetzner-lab"
 }

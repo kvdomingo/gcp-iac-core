@@ -6,10 +6,6 @@ terraform {
       source  = "hashicorp/google"
       version = "~>6"
     }
-    hcloud = {
-      source  = "hetznercloud/hcloud"
-      version = "~>1"
-    }
   }
 
   backend "gcs" {
