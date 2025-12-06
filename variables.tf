@@ -1,4 +1,8 @@
-variable "github_repo_owner_id" {
-  type = number
+variable "infisical_service_token" {
+  type      = string
+  sensitive = true
 }
 
+variable "infisical_workspace_id" {
+  type = string
+}

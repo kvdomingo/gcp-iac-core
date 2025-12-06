@@ -1,0 +1,11 @@
+version: 3
+
+tasks:
+  init:
+    cmd: infisical run -- terraform init {{ .CLI_ARGS }}
+
+  plan:
+    cmd: infisical run -- terraform plan -out=.tfplan {{ .CLI_ARGS }}
+
+  apply:
+    cmd: infisical run -- terraform apply .tfplan {{ .CLI_ARGS }}
