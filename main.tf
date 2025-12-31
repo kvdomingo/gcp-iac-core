@@ -3,12 +3,6 @@ locals {
   default_region = "asia-east1"
 }
 
-data "infisical_secrets" "env" {
-  env_slug     = "prod"
-  workspace_id = var.infisical_workspace_id
-  folder_path  = "/"
-}
-
 module "apis" {
   source = "./modules/cloud-platform"
 }
@@ -20,7 +14,7 @@ module "service_accounts" {
 module "github_actions_workload_identity_pool" {
   source = "./modules/workload-identity-pool"
 
-  github_repo_owner_id = data.infisical_secrets.env.secrets["GITHUB_REPO_OWNER_ID"].value
+  github_repo_owner_id = var.github_repo_owner_id
   terraform_sa_id      = module.service_accounts.terraform_sa_id
 }
 

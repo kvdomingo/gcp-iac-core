@@ -1,8 +1,3 @@
-variable "infisical_service_token" {
+variable "github_repo_owner_id" {
   type      = string
-  sensitive = true
-}
-
-variable "infisical_workspace_id" {
-  type = string
 }

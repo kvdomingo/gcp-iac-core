@@ -6,10 +6,6 @@ terraform {
       source  = "hashicorp/google"
       version = "~>6"
     }
-    infisical = {
-      source  = "infisical/infisical"
-      version = "~>0.15"
-    }
   }
 
   backend "gcs" {
