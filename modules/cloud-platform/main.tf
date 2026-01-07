@@ -1,7 +1,9 @@
 locals {
   apis = toset([
+    "aiplatform",
     "artifactregistry",
     "bigquery",
+    "cloudaicompanion",
     "cloudbuild",
     "cloudfunctions",
     "cloudresourcemanager",
@@ -11,6 +13,7 @@ locals {
     "dns",
     "domains",
     "firestore",
+    "geminicloudassist",
     "iam",
     "iamcredentials",
     "iap",
